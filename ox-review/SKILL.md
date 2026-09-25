@@ -10,6 +10,26 @@ Review the code the user names. Write findings without changing code unless the 
 
 This skill and `docs/agents/reviews/` are for code reviews. Plan critiques and standalone documentation reviews are outside its scope. Read plans and documentation as context for code under review; the documentation lens checks guidance for that code.
 
+## Standard
+
+The code under review is a personal project with one user, its author. Small, direct code that is easy to understand matters more than handling every case. Report only what would actually go wrong for that user, or what makes the code harder to understand or larger than it needs to be.
+
+These are not findings:
+
+- Inputs the user will not produce, adversarial inputs, or data the program itself wrote that could only be malformed if something else had already failed.
+- Multiple users, concurrent access, or hostile networks, unless the code actually does that.
+- Resource exhaustion, hardening, or a defensive check whose only justification is that the case is possible in theory.
+- A missing recovery path where crashing with a clear message is acceptable.
+- A style or pattern preference with no effect on behavior or readability.
+
+Existing code that handles one of these cases is a finding: report it as code to remove.
+
+Severity describes the effect on the user:
+
+- `high` — wrong results, lost data, or a crash in normal use.
+- `medium` — wrong behavior in a realistic case, or code that is materially harder to understand or larger than it needs to be.
+- `low` — polish.
+
 ## Choose what to review
 
 Read `<input_document> $ARGUMENTS </input_document>`. Use `general` unless the user names one or more lenses from the list below. Ask for clarification only when the answer would change what you review.
@@ -24,24 +44,23 @@ Trace behavior through callers, state changes, resource lifetimes, and tests. Ju
 
 Read the requirements that define the behavior. If the user has approved a new design, review against that design. Flag complex or expensive code that adds no required behavior. Do not recommend extra code for a hypothetical edge case alone.
 
-Check suspected bugs by tracing the code, reproducing the behavior, or running a focused check. Follow `AGENTS.md` when choosing validation. A lens does not require a fixed set of commands, a new test for each error path, or a broader review than the requested scope. Report only supported findings, and say when you reviewed only part of the code.
+Confirm each suspected bug by tracing the code, reproducing the behavior, or running a focused check before reporting it. If you cannot confirm it, leave it out. Follow `AGENTS.md` when choosing validation. A lens does not require a fixed set of commands, a new test for each error path, or a broader review than the requested scope. Say when you reviewed only part of the code.
 
 ## Report
 
-If `docs/agents/issues.csv` or `docs/agents/todo.md` is missing, run the `ox-init` skill first. Read `docs/agents/issues.csv` and give each finding, confirmed or not, the next unused id (`OX-NNNN`, one more than the highest id in the file).
+If `docs/agents/issues.csv` or `docs/agents/todo.md` is missing, run the `ox-init` skill first. Read `docs/agents/issues.csv` and give each finding the next unused id (`OX-NNNN`, one more than the highest id in the file).
 
-Read `docs/agents/reviews/_template.md`, or this skill's `assets/_template.md` if the workspace has none, and use it to write the review in `docs/agents/reviews/YYYY-MM-DD-NNN-slug.md`, using the next sequence for the day. State the scope, selected lenses, and significant gaps in coverage. Group confirmed findings by severity (high, medium, low), then by lens within each severity. For each finding, give its id, the source location, what can happen, the evidence, and a suggested fix. List unconfirmed issues separately with their ids and say what would confirm them. Record the checks you ran. If there are no findings, say so. End with a short verdict.
+Read `docs/agents/reviews/_template.md`, or this skill's `assets/_template.md` if the workspace has none, and use it to write the review in `docs/agents/reviews/YYYY-MM-DD-NNN-slug.md`, using the next sequence for the day. State the scope, selected lenses, and significant gaps in coverage. Group findings by severity (high, medium, low), then by lens within each severity. For each finding, give its id, the source location, what can happen, the evidence, and a suggested fix. Record the checks you ran. If there are no findings, say so. End with a short verdict.
 
 ## Record issues
 
-Append one row to `docs/agents/issues.csv` for each finding and each unconfirmed issue, in the order they appear in the review. Never reorder or delete existing rows, because `todo.md` links to rows by line number. Quote a field that contains a comma, a quote, or a newline as CSV requires. The columns are:
+Append one row to `docs/agents/issues.csv` for each finding, in the order they appear in the review. Never reorder or delete existing rows, because `todo.md` links to rows by line number. Quote a field that contains a comma, a quote, or a newline as CSV requires. The columns are:
 
 - `id` — the finding's `OX-NNNN` id.
 - `created` — the current local date and time as `YYYY-MM-DD HH:MM`.
 - `title` — the finding title.
 - `severity` — `high`, `medium`, or `low`.
 - `lens` — the lens that found it, or empty.
-- `confirmed` — `true` for a confirmed finding, `false` for an unconfirmed issue.
 - `status` — `planned` for high and medium severity, `unplanned` for low.
 - `review` — the review path relative to `docs/agents/`, such as `reviews/2026-09-25-001-slug.md`.
 

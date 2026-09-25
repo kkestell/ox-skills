@@ -8,6 +8,10 @@ argument-hint: "[jira ticket, feature idea, bug report, or improvement to explor
 
 Write a plan without changing the code.
 
+## Design standard
+
+The project is a personal project with one user, its author. Choose the simplest design that meets the stated need. State the assumptions the code makes about its inputs and let the code rely on them instead of checking them. Prefer crashing with a clear message over recovering from a failure the user can fix. Do not add configuration, abstraction, or extensibility for a need the user has not stated. When a request implies handling an unusual case, ask whether it actually happens before designing for it.
+
 ## Establish the work
 
 1. Read `<feature_description> $ARGUMENTS </feature_description>`. If it is empty, ask what the user wants to plan and stop.
@@ -22,7 +26,7 @@ Write a plan without changing the code.
 4. Brainstorm with the user before writing when the user asks to brainstorm, the request is unclear, or exploring leaves a real engineering or design decision. Otherwise, go to Write.
 5. Ask one focused question at a time and wait for the answer. For each decision, give the options, their trade-offs, and a recommendation. Do not ask what the repository documents or existing code already answer.
 6. Speak clearly and simply. Use terms from `docs/agents/glossary.md` exactly, and do not use jargon, invented terms, or shorthand.
-7. Say so directly when a request adds a lot of complexity, contradicts the architecture or an earlier decision, or fits poorly with existing code. Name the cost and recommend a simpler option. Do not let the design grow complex to fit every request.
+7. Say so directly when a request adds a lot of complexity, handles a case that will not happen in practice, contradicts the architecture or an earlier decision, or fits poorly with existing code. Name the cost and recommend a simpler option. Do not let the design grow complex to fit every request.
 8. Stop brainstorming when the scope and every decision are settled.
 
 ## Write

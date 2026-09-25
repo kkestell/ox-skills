@@ -1,6 +1,5 @@
 # Security
 
-- Identify actual trust boundaries and untrusted inputs. Tie findings to a realistic threat and a concrete input; do not invent a broader threat model.
-- Trace permissions and workspace confinement through the operation actually executed, including path races, command construction, and delegated work.
-- Check secret storage, diagnostic output, and tracing against their intended disclosure rules. Stored user content is not automatically a sanitized log.
-- Resource limits should address a concrete boundary risk. An intentionally unbounded input or history is not automatically a defect.
+- The threats that matter are secrets committed to the repository or written to logs and output, and operations that could delete or overwrite the user's own data. Tie a finding to a concrete input or path.
+- Check injection, path traversal, and permission boundaries only when the code accepts input from someone other than the user, such as a network service or a shared file.
+- Do not report hardening, resource limits, or validation of the user's own input as security findings.
