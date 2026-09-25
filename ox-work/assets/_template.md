@@ -1,11 +1,10 @@
 # Work log title
 
-Keep the log short. Record what the plan and the diff do not show. Delete
-unused headings and placeholder text.
+Keep the log short. Record what the plan and the diff do not show. Delete unused headings and placeholder text.
 
 ## Plan
 
-`eng/plans/YYYY-MM-DD-NNN-slug.md`
+`docs/agents/plans/YYYY-MM-DD-NNN-slug.md`
 
 ## Summary
 
@@ -17,8 +16,7 @@ State what changed and whether the plan's goal is met.
 
 ## Decisions
 
-- Choices made during the work that the plan did not settle. Omit this section
-  if there are none.
+- Choices made during the work that the plan did not settle. Omit this section if there are none.
 
 ## Automated checks
 
@@ -26,8 +24,7 @@ State what changed and whether the plan's goal is met.
 
 ## Manual verification
 
-For each check, give the steps and commands to reproduce it and the result you
-observed.
+For each check, give the steps and commands to reproduce it and the result you observed.
 
 1. What you verified.
 
