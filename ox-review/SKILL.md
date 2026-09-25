@@ -126,6 +126,8 @@ One or two sentences giving the verdict, the number of findings fixed, and the n
 - `docs/agents/reviews/YYYY-MM-DD-NNN-slug.md` (created)
 - `docs/agents/issues.csv` (modified)
 - `docs/agents/todo.md` (modified)
+
+**Next:** `/ox-plan fix OX-0012 from docs/agents/issues.csv`
 ```
 
-The table lists the open high and medium severity findings, high first. If there are none, replace the table with `No open high or medium severity findings.` List every file the commit created or modified, marked `(created)` or `(modified)`.
+The table lists the open high and medium severity findings, high first. If there are none, replace the table with `No open high or medium severity findings.` List every file the commit created or modified, marked `(created)` or `(modified)`. For Next, recommend planning the fix for the most severe open finding. If there are no open high or medium severity findings, recommend `/ox-plan` for the first unchecked task in `docs/agents/todo.md`, or write `Nothing left in docs/agents/todo.md.` if there is none.

@@ -49,6 +49,8 @@ Two to four sentences explaining, at a high level, what the code change does and
 
 - `src/parser.rs` (modified)
 - `src/tokens.rs` (created)
+
+**Next:** `/ox-work docs/agents/plans/YYYY-MM-DD-NNN-slug.md`
 ```
 
 List every file the plan will create or modify, marked `(created)` or `(modified)`.

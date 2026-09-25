@@ -47,6 +47,8 @@ One or two sentences saying what was built and whether the plan's goal is met.
 
 - `src/parser.rs` (modified)
 - `src/tokens.rs` (created)
+
+**Next:** `/ox-review commit abc1234`
 ```
 
 Write `None.` under Surprises if the work went as planned. Count lines from the commit, excluding `docs/agents/`, with `git diff --shortstat HEAD~1 HEAD -- . ':(exclude)docs/agents'`. List every file the commit created or modified, marked `(created)` or `(modified)`.
