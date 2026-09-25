@@ -34,4 +34,21 @@ The project is a personal project with one user, its author. Choose the simplest
 9. Read `docs/agents/plans/_template.md`, or this skill's `assets/_template.md` if the workspace has none, and use it to write the plan in `docs/agents/plans/`. Name the file `YYYY-MM-DD-NNN-slug.md`, using the next sequence for the day.
 10. Keep the plan to relevant code references, tasks tied to files, decisions that need explanation, names, and tests for this change. Do not repeat the architecture documents, repository rules, standard validation commands, conversation history, rejected options, or work for a later change.
 11. Use terms from `docs/agents/glossary.md` exactly. Use the same names in plan tasks, proposed code, comments, and documentation. Do not give one concept several names or give an existing term a new meaning. Define any new term in the plan's Naming section and use it consistently.
-12. Give the final plan path and stop. Do not review the plan yourself or ask another agent to review it.
+12. Do not review the plan yourself or ask another agent to review it. Give the final response and stop.
+
+## Final response
+
+When the plan is written, reply in the form below and nothing else. Lead with the main point, write plainly, and leave out the options you rejected, the code you explored, and the steps you took.
+
+```markdown
+Two to four sentences explaining, at a high level, what the code change does and how.
+
+**Plan:** `docs/agents/plans/YYYY-MM-DD-NNN-slug.md`
+
+**Files:**
+
+- `src/parser.rs` (modified)
+- `src/tokens.rs` (created)
+```
+
+List every file the plan will create or modify, marked `(created)` or `(modified)`.

@@ -76,7 +76,7 @@ When the user, the plan, or the work log for the reviewed change names a task in
 
 ## Commit
 
-Commit the fixes, the review, `issues.csv`, and `todo.md` together, following the commit rules in `AGENTS.md`. Do not commit unrelated changes. Give the review path and the commit hash and stop.
+Commit the fixes, the review, `issues.csv`, and `todo.md` together, following the commit rules in `AGENTS.md`. Do not commit unrelated changes. Give the final response and stop.
 
 ## General lenses
 
@@ -105,3 +105,27 @@ Use these only for Rust code. Future language lenses belong in their own languag
 - [`rust-ownership`](references/rust/ownership.md) — borrowing, clones, allocation, and shared ownership.
 - [`rust-idioms`](references/rust/idioms.md) — `Result`/`Option`, traits, generics, macros, and Rust concurrency types.
 - [`rust-cargo`](references/rust/cargo.md) — Cargo manifests, lockfiles, features, and toolchain costs.
+
+## Final response
+
+When the review is committed, reply in the form below and nothing else. Lead with the main point, write plainly, and leave out the checks that passed, the suspected bugs you ruled out, and the steps you took.
+
+```markdown
+One or two sentences giving the verdict, the number of findings fixed, and the number left open by severity.
+
+| ID      | Severity | Title                           | Location           |
+| ------- | -------- | ------------------------------- | ------------------ |
+| OX-0012 | high     | Parser drops the final token    | `src/parser.rs:42` |
+| OX-0013 | medium   | Retry loop hides the real error | `src/fetch.rs:88`  |
+
+**Review:** `docs/agents/reviews/YYYY-MM-DD-NNN-slug.md` · **Commit:** `abc1234`
+
+**Files:**
+
+- `src/parser.rs` (modified)
+- `docs/agents/reviews/YYYY-MM-DD-NNN-slug.md` (created)
+- `docs/agents/issues.csv` (modified)
+- `docs/agents/todo.md` (modified)
+```
+
+The table lists the open high and medium severity findings, high first. If there are none, replace the table with `No open high or medium severity findings.` List every file the commit created or modified, marked `(created)` or `(modified)`.

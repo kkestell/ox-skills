@@ -28,4 +28,25 @@ Implement the plan, record what was done, and commit.
 ## Commit
 
 9. Commit the implementation and the work log together, following the commit rules in `AGENTS.md`. Do not commit unrelated changes.
-10. Give the work log path and the commit hash and stop.
+10. Give the final response and stop.
+
+## Final response
+
+When the work is committed, reply in the form below and nothing else. Lead with the main point, write plainly, and leave out the checks that passed and the steps you took.
+
+```markdown
+One or two sentences saying what was built and whether the plan's goal is met.
+
+**Surprises:**
+
+- A departure from the plan, a detour, something unexpected in the code, or follow-up work.
+
+**Work log:** `docs/agents/work/YYYY-MM-DD-NNN-slug.md` · **Commit:** `abc1234` · **Lines:** +120 / −45 (net +75)
+
+**Files:**
+
+- `src/parser.rs` (modified)
+- `src/tokens.rs` (created)
+```
+
+Write `None.` under Surprises if the work went as planned. Count lines from the commit, excluding `docs/agents/`, with `git diff --shortstat HEAD~1 HEAD -- . ':(exclude)docs/agents'`. List every file the commit created or modified, marked `(created)` or `(modified)`.
