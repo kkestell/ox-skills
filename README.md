@@ -5,11 +5,11 @@
 From a local checkout:
 
 ```bash
-npx skills add /path/to/ox-skills -g -a claude-code -a codex -s ox-plan -s ox-review
+npx skills add /path/to/ox-skills -g -a claude-code -a codex -s ox-plan -s ox-review -s ox-format-markdown
 ```
 
 From GitHub:
 
 ```bash
-npx skills add kkestell/ox-skills -g -a claude-code -a codex -s ox-plan -s ox-review
+npx skills add kkestell/ox-skills -g -a claude-code -a codex -s ox-plan -s ox-review -s ox-format-markdown
 ```
