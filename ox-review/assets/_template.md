@@ -8,29 +8,29 @@ State what you reviewed, which lenses you used, and any material gaps in coverag
 
 ## Findings
 
-For each finding, give the source location, what can happen, the evidence, and a suggested fix. If there are no confirmed findings, say so here.
+For each finding, give its issue id, the source location, what can happen, the evidence, and a suggested fix. If there are no confirmed findings, say so here.
 
 ### High
 
 #### Lens name
 
-- **Finding title** (`path/to/file.rs:line`): Consequence, evidence, and fix.
+- **OX-NNNN Finding title** (`path/to/file.rs:line`): Consequence, evidence, and fix.
 
 ### Medium
 
 #### Lens name
 
-- **Finding title** (`path/to/file.rs:line`): Consequence, evidence, and fix.
+- **OX-NNNN Finding title** (`path/to/file.rs:line`): Consequence, evidence, and fix.
 
 ### Low
 
 #### Lens name
 
-- **Finding title** (`path/to/file.rs:line`): Consequence, evidence, and fix.
+- **OX-NNNN Finding title** (`path/to/file.rs:line`): Consequence, evidence, and fix.
 
 ## Unresolved questions
 
-List suspected issues that you could not confirm and what would settle them. Omit this section if there are none.
+List suspected issues that you could not confirm, each with its issue id, and what would settle them. Omit this section if there are none.
 
 ## Checks run
 
