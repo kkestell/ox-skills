@@ -18,7 +18,7 @@ Implements a plan and commits. Writes a work log to `docs/agents/work/`.
 
 ### `/ox-review`
 
-Reviews code in a diff, branch, commit, or files. Writes a review to `docs/agents/reviews/`, records each finding in `docs/agents/issues.csv`, and adds high and medium severity issues to `docs/agents/todo.md`.
+Reviews code in a diff, branch, commit, or files. Fixes findings that have obvious fixes, writes a review to `docs/agents/reviews/`, records the remaining findings in `docs/agents/issues.csv`, adds high and medium severity issues to `docs/agents/todo.md`, checks off the reviewed task, and commits.
 
 ## Global install
 

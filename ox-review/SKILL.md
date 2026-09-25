@@ -1,12 +1,12 @@
 ---
 name: ox-review
-description: "Review code in a diff, branch, commit, or specified files, write findings in `docs/agents/reviews/`, and record them in `docs/agents/issues.csv`. Supports general and language-specific focused code reviews. Do not use for plan critiques or standalone documentation reviews."
+description: "Review code in a diff, branch, commit, or specified files, fix findings that have obvious fixes, write the review in `docs/agents/reviews/`, record the remaining findings in `docs/agents/issues.csv`, and commit. Supports general and language-specific focused code reviews. Do not use for plan critiques or standalone documentation reviews."
 argument-hint: "[general|lens[,lens...]] [review scope]"
 ---
 
 ## Objective
 
-Review the code the user names. Write findings without changing code unless the user also asks for fixes. Follow review and delegation rules in `AGENTS.md`.
+Review the code the user names. Fix findings that have an obvious, straightforward fix, record the rest as issues, and commit. Follow review and delegation rules in `AGENTS.md`.
 
 This skill and `docs/agents/reviews/` are for code reviews. Plan critiques and standalone documentation reviews are outside its scope. Read plans and documentation as context for code under review; the documentation lens checks guidance for that code.
 
@@ -46,25 +46,37 @@ Read the requirements that define the behavior. If the user has approved a new d
 
 Confirm each suspected bug by tracing the code, reproducing the behavior, or running a focused check before reporting it. If you cannot confirm it, leave it out. Follow `AGENTS.md` when choosing validation. A lens does not require a fixed set of commands, a new test for each error path, or a broader review than the requested scope. Say when you reviewed only part of the code.
 
+## Fix
+
+Fix a finding when the fix is obvious and straightforward: it has one clear right answer and needs no design, behavior, or interface decision. Leave a finding open when it needs an engineering decision, a design change, or a plan. Make only the change the finding calls for. Validate the fixes as `AGENTS.md` directs. If a fix fails validation and the cause is not obvious, revert it and leave the finding open.
+
 ## Report
 
-If `docs/agents/issues.csv` or `docs/agents/todo.md` is missing, run the `ox-init` skill first. Read `docs/agents/issues.csv` and give each finding the next unused id (`OX-NNNN`, one more than the highest id in the file).
+If `docs/agents/issues.csv` or `docs/agents/todo.md` is missing, run the `ox-init` skill first. Read `docs/agents/issues.csv` and give each open finding the next unused id (`OX-NNNN`, one more than the highest id in the file).
 
-Read `docs/agents/reviews/_template.md`, or this skill's `assets/_template.md` if the workspace has none, and use it to write the review in `docs/agents/reviews/YYYY-MM-DD-NNN-slug.md`, using the next sequence for the day. State the scope, selected lenses, and significant gaps in coverage. Group findings by severity (high, medium, low), then by lens within each severity. For each finding, give its id, the source location, what can happen, the evidence, and a suggested fix. Record the checks you ran. If there are no findings, say so. End with a short verdict.
+Read `docs/agents/reviews/_template.md`, or this skill's `assets/_template.md` if the workspace has none, and use it to write the review in `docs/agents/reviews/YYYY-MM-DD-NNN-slug.md`, using the next sequence for the day. State the scope, selected lenses, and significant gaps in coverage. List the fixed findings with the source location, what could happen, and the fix; they get no id. Group open findings by severity (high, medium, low), then by lens within each severity. For each open finding, give its id, the source location, what can happen, the evidence, and a suggested fix. Record the checks you ran. If there are no findings, say so. End with a short verdict.
 
 ## Record issues
 
-Append one row to `docs/agents/issues.csv` for each finding, in the order they appear in the review. Never reorder or delete existing rows, because `todo.md` links to rows by line number. Quote a field that contains a comma, a quote, or a newline as CSV requires. The columns are:
+Append one row to `docs/agents/issues.csv` for each open finding, in the order they appear in the review. Fixed findings stay out of `issues.csv` and `todo.md`. Never reorder or delete existing rows, because `todo.md` links to rows by line number. Quote a field that contains a comma, a quote, or a newline as CSV requires. The columns are:
 
 - `id` — the finding's `OX-NNNN` id.
 - `created` — the current local date and time as `YYYY-MM-DD HH:MM`.
 - `title` — the finding title.
 - `severity` — `high`, `medium`, or `low`.
 - `lens` — the lens that found it, or empty.
-- `status` — `planned` for high and medium severity, `unplanned` for low.
+- `status` — `scheduled` for high and medium severity, `unscheduled` for low.
 - `review` — the review path relative to `docs/agents/`, such as `reviews/2026-09-25-001-slug.md`.
 
 Add each high and medium severity issue to `docs/agents/todo.md` as an unchecked item, `- [ ] [OX-NNNN](issues.csv:LINE): Title`, where `LINE` is the row's line number in `issues.csv`. When the user, the plan, or the work log for the reviewed change names a task in `todo.md`, nest the item under that task. Otherwise add it as a new top-level item. Low severity issues stay out of `todo.md`.
+
+## Update the task
+
+When the user, the plan, or the work log for the reviewed change names a task in `todo.md`, check that task off. Issues nested under it stay unchecked. If the task links to an issue, set that issue's status to `fixed` in `issues.csv`.
+
+## Commit
+
+Commit the fixes, the review, `issues.csv`, and `todo.md` together, following the commit rules in `AGENTS.md`. Do not commit unrelated changes. Give the review path and the commit hash and stop.
 
 ## General lenses
 
