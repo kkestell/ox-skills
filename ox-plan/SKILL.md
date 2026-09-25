@@ -40,8 +40,9 @@ Write a plan without changing the code.
 
 ## Write
 
-9. Read `eng/plans/TEMPLATE.md` and use it to write the plan in `eng/plans/`.
-   Name the file `YYYY-MM-DD-NNN-slug.md`, using the next sequence for the day.
+9. Read `eng/plans/TEMPLATE.md`, or this skill's `assets/plan-template.md` if
+   the workspace has none, and use it to write the plan in `eng/plans/`. Name
+   the file `YYYY-MM-DD-NNN-slug.md`, using the next sequence for the day.
 10. Keep the plan to relevant code references, tasks tied to files, decisions
     that need explanation, names, and tests for this change. Do not repeat the
     architecture documents, repository rules, standard validation commands,

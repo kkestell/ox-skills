@@ -50,7 +50,8 @@ say when you reviewed only part of the code.
 
 ## Report
 
-Read `eng/reviews/TEMPLATE.md` and use it to write the review in
+Read `eng/reviews/TEMPLATE.md`, or this skill's `assets/review-template.md` if
+the workspace has none, and use it to write the review in
 `eng/reviews/YYYY-MM-DD-NNN-slug.md`, using the next sequence for the day.
 State the scope, selected lenses, and significant gaps in coverage. Group
 confirmed findings by severity (high, medium, low), then by lens within each
