@@ -91,6 +91,8 @@ short verdict.
   integration costs.
 - [`documentation`](references/general/documentation.md) — caller guidance and
   design documents associated with the code under review.
+- [`simplicity`](references/general/simplicity.md) — less code and fewer
+  concepts with behavior preserved.
 
 ## Rust lenses
 
