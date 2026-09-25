@@ -1,14 +1,14 @@
 ---
 name: ox-review
-description: "Review code in a diff, branch, commit, or specified files, fix findings that have obvious fixes, write the review in `docs/agents/reviews/`, record the remaining findings in `docs/agents/issues.csv`, and commit. Supports general and language-specific focused code reviews. Do not use for plan critiques or standalone documentation reviews."
+description: "Review code in a diff, branch, commit, or specified files, fix findings that have obvious fixes, record the remaining findings as tickets in `.ox/ox.fossil`, write the review as a technote, close the reviewed ticket, and commit. Supports general and language-specific focused code reviews. Do not use for plan critiques or standalone documentation reviews."
 argument-hint: "[general|lens[,lens...]] [review scope]"
 ---
 
 ## Objective
 
-Review the code the user names. Fix findings that have an obvious, straightforward fix, record the rest as issues, and commit. Follow review and delegation rules in `AGENTS.md`.
+Review the code the user names. Fix findings that have an obvious, straightforward fix, record the rest as tickets, and commit. Follow review and delegation rules in `AGENTS.md`.
 
-This skill and `docs/agents/reviews/` are for code reviews. Plan critiques and standalone documentation reviews are outside its scope. Read plans and documentation as context for code under review; the documentation lens checks guidance for that code.
+This skill and the `review` technotes are for code reviews. Plan critiques and standalone documentation reviews are outside its scope. Read plans and documentation as context for code under review; the documentation lens checks guidance for that code.
 
 ## Standard
 
@@ -24,11 +24,11 @@ These are not findings:
 
 Existing code that handles one of these cases is a finding: report it as code to remove.
 
-Severity describes the effect on the user:
+Severity uses Fossil's values and describes the effect on the user:
 
-- `high` — wrong results, lost data, or a crash in normal use.
-- `medium` — wrong behavior in a realistic case, or code that is materially harder to understand or larger than it needs to be.
-- `low` — polish.
+- `Severe` — wrong results, lost data, or a crash in normal use.
+- `Important` — wrong behavior in a realistic case, or code that is materially harder to understand or larger than it needs to be.
+- `Minor` — polish.
 
 ## Choose what to review
 
@@ -50,33 +50,53 @@ Confirm each suspected bug by tracing the code, reproducing the behavior, or run
 
 Fix a finding when the fix is obvious and straightforward: it has one clear right answer and needs no design, behavior, or interface decision. Leave a finding open when it needs an engineering decision, a design change, or a plan. Make only the change the finding calls for. Validate the fixes as `AGENTS.md` directs. If a fix fails validation and the cause is not obvious, revert it and leave the finding open.
 
-## Report
-
-If `docs/agents/issues.csv` or `docs/agents/todo.md` is missing, run the `ox-init` skill first. Read `docs/agents/issues.csv` and give each open finding the next unused id (`OX-NNNN`, one more than the highest id in the file).
-
-Read `docs/agents/reviews/_template.md`, or this skill's `assets/_template.md` if the workspace has none, and use it to write the review in `docs/agents/reviews/YYYY-MM-DD-NNN-slug.md`, using the next sequence for the day. State the scope, selected lenses, and significant gaps in coverage. List the fixed findings with the source location, what could happen, and the fix; they get no id. Group open findings by severity (high, medium, low), then by lens within each severity. For each open finding, give its id, the source location, what can happen, the evidence, and a suggested fix. Record the checks you ran. If there are no findings, say so. End with a short verdict.
-
 ## Record issues
 
-Append one row to `docs/agents/issues.csv` for each open finding, in the order they appear in the review. Fixed findings stay out of `issues.csv` and `todo.md`. Never reorder or delete existing rows, because `todo.md` links to rows by line number. Quote a field that contains a comma, a quote, or a newline as CSV requires. The columns are:
+If `.ox/ox.fossil` is missing, run the `ox-init` skill first. Every Fossil command below takes `-R .ox/ox.fossil`.
 
-- `id` — the finding's `OX-NNNN` id.
-- `created` — the current local date and time as `YYYY-MM-DD HH:MM`.
-- `title` — the finding title.
-- `severity` — `high`, `medium`, or `low`.
-- `lens` — the lens that found it, or empty.
-- `status` — `scheduled` for high and medium severity, `unscheduled` for low.
-- `review` — the review path relative to `docs/agents/`, such as `reviews/2026-09-25-001-slug.md`.
+Add one `Code_Defect` ticket for each open finding, in severity order. Fixed findings get no ticket.
 
-Add each high and medium severity issue to `docs/agents/todo.md` as an unchecked item, `- [ ] [OX-NNNN](issues.csv:LINE): Title`, where `LINE` is the row's line number in `issues.csv`. When the user, the plan, or the work log for the reviewed change names a task in `todo.md`, nest the item under that task. Otherwise add it as a new top-level item. Low severity issues stay out of `todo.md`.
+```sh
+fossil ticket add type Code_Defect title "Finding title" severity Severe priority High status Open subsystem parser comment "src/parser.rs:42 — what can happen, the evidence, and the suggested fix." -R .ox/ox.fossil
+```
 
-## Update the task
+- `severity` — `Severe`, `Important`, or `Minor`.
+- `priority` — `High` for Severe, `Medium` for Important, `Low` for Minor.
+- `status` — `Open` for Severe and Important, `Deferred` for Minor.
+- `subsystem` — the area of the code, matching the names existing tickets use.
+- `comment` — the source location, what can happen, the evidence, and the suggested fix. Use `--quote` and `\n` for line breaks.
 
-When the user, the plan, or the work log for the reviewed change names a task in `todo.md`, check that task off. Issues nested under it stay unchecked. If the task links to an issue, set that issue's status to `fixed` in `issues.csv`.
+The command prints the ticket hash. Refer to a ticket by its first ten characters.
+
+## Report
+
+Read the wiki page `reviews/_template`, or this skill's `assets/_template.md` if the repository has none, and use it to write the review to a temporary file. State the scope, selected lenses, and significant gaps in coverage. List the fixed findings with the source location, what could happen, and the fix; they get no ticket. Group open findings by severity (Severe, Important, Minor), then by lens within each severity. For each open finding, give its ticket as `[](HASH)`, the source location, what can happen, the evidence, and a suggested fix. Record the checks you ran. If there are no findings, say so. End with a short verdict.
+
+Create the review as a technote whose timeline comment is `Review: <scope>`:
+
+```sh
+fossil wiki create "Review: <scope>" <temp-file> --technote now --technote-tags review -M markdown -R .ox/ox.fossil
+```
+
+Read the technote id from `fossil wiki list -t -s -R .ox/ox.fossil` (most recent first, id in the first column). Then link the review from each new ticket:
+
+```sh
+fossil ticket set HASH icomment "Found in review [/technote/ID] (lens: correctness)." -R .ox/ox.fossil
+```
+
+## Close the reviewed ticket
+
+When the user, the plan, or the work log for the reviewed change names a ticket, close it and link the review:
+
+```sh
+fossil ticket set HASH status Closed resolution Fixed icomment "Reviewed in [/technote/ID]." -R .ox/ox.fossil
+```
+
+Findings about the change are separate tickets; they do not keep the reviewed ticket open. If the review shows the change does not do what its ticket asks, set the ticket back to `Open` with a comment saying why instead of closing it.
 
 ## Commit
 
-Commit the fixes, the review, `issues.csv`, and `todo.md` together, following the commit rules in `AGENTS.md`. Do not commit unrelated changes. Give the final response and stop.
+Commit the fixes and `.ox/ox.fossil` together, following the commit rules in `AGENTS.md`. Do not commit unrelated changes. Give the final response and stop.
 
 ## General lenses
 
@@ -113,21 +133,19 @@ When the review is committed, reply in the form below and nothing else. Lead wit
 ```markdown
 One or two sentences giving the verdict, the number of findings fixed, and the number left open by severity.
 
-| ID      | Severity | Title                           | Location           |
-| ------- | -------- | ------------------------------- | ------------------ |
-| OX-0012 | high     | Parser drops the final token    | `src/parser.rs:42` |
-| OX-0013 | medium   | Retry loop hides the real error | `src/fetch.rs:88`  |
+| Ticket       | Severity  | Title                           | Location           |
+| ------------ | --------- | ------------------------------- | ------------------ |
+| `732fce7493` | Severe    | Parser drops the final token    | `src/parser.rs:42` |
+| `90975723e5` | Important | Retry loop hides the real error | `src/fetch.rs:88`  |
 
-**Review:** `docs/agents/reviews/YYYY-MM-DD-NNN-slug.md` · **Commit:** `abc1234`
+**Review:** technote `29d47147ea` · **Closed:** `533f4406a1` · **Commit:** `abc1234`
 
 **Files:**
 
 - `src/parser.rs` (modified)
-- `docs/agents/reviews/YYYY-MM-DD-NNN-slug.md` (created)
-- `docs/agents/issues.csv` (modified)
-- `docs/agents/todo.md` (modified)
+- `.ox/ox.fossil` (modified)
 
-**Next:** `/ox-plan fix OX-0012 from docs/agents/issues.csv`
+**Next:** `/ox-plan 732fce7493`
 ```
 
-The table lists the open high and medium severity findings, high first. If there are none, replace the table with `No open high or medium severity findings.` List every file the commit created or modified, marked `(created)` or `(modified)`. For Next, recommend planning the fix for the most severe open finding. If there are no open high or medium severity findings, recommend `/ox-plan` for the first unchecked task in `docs/agents/todo.md`, or write `Nothing left in docs/agents/todo.md.` if there is none.
+The table lists the open Severe and Important findings, Severe first. If there are none, replace the table with `No open Severe or Important findings.` Omit Closed if no ticket was closed. List every file the commit created or modified, marked `(created)` or `(modified)`. For Next, recommend planning the most severe open finding. If there are none, recommend `/ox-plan` for the highest-priority `Open` ticket, or write `No open tickets.` if there is none.

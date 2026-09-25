@@ -2,6 +2,10 @@
 
 Write the plan after making the main decisions. Keep the sections needed to explain the change, the relevant code, the tasks, and the tests. Delete unused headings and placeholder text.
 
+## Ticket
+
+[](HASH)
+
 ## Goal
 
 State the problem and what should happen when the work is done.
@@ -16,7 +20,7 @@ Record choices that may not be clear from the tasks. Explain any constraints nee
 
 ## Naming
 
-Define each project term used in the plan. Use its definition from `docs/agents/glossary.md` if it has one. Use the same term in tasks, code, comments, and documentation. Do not use different names for the same thing or give an existing term a new meaning.
+Define each project term used in the plan. Use its definition from the `glossary` wiki page if it has one. Use the same term in tasks, code, comments, and documentation. Do not use different names for the same thing or give an existing term a new meaning.
 
 - `term` — Its definition and where the name will appear.
 

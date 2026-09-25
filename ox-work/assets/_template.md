@@ -4,7 +4,7 @@ Keep the log short. Record what the plan and the diff do not show. Delete unused
 
 ## Plan
 
-`docs/agents/plans/YYYY-MM-DD-NNN-slug.md`
+[](plans/YYYY-MM-DD-NNN-slug) for ticket [](HASH), implemented in git commit `abc1234`.
 
 ## Summary
 
