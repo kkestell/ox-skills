@@ -40,6 +40,8 @@ For a general review, choose lenses that fit the code and its risks, including l
 
 ## Review
 
+Start from the current code. Inventory every file in the requested scope, read the production code and relevant tests and requirements, and resolve truncated tool output before claiming full coverage. Investigate and confirm candidate findings independently. Only then read earlier reviews to check for duplicates or already tracked issues; they must not define the scope or stand in for verification. If coverage is partial, name the unreviewed parts plainly.
+
 Trace behavior through callers, state changes, resource lifetimes, and tests. Judge implementation choices by their purpose and consequence. Do not treat a language feature or coding pattern as a defect on its own.
 
 Read the requirements that define the behavior. If the user has approved a new design, review against that design. Flag complex or expensive code that adds no required behavior. Do not recommend extra code for a hypothetical edge case alone.
