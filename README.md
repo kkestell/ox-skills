@@ -49,3 +49,12 @@ From GitHub:
 ```bash
 npx skills add kkestell/ox-skills -g -a claude-code -a codex -s '*'
 ```
+
+## Global Codex instructions
+
+`codex/AGENTS.md` holds personal instructions shared across projects. On another computer, copy it from a checkout to `~/.codex/AGENTS.md`, merging with an existing file if needed. Installing the skills does not install this file.
+
+```bash
+mkdir -p ~/.codex
+cp -i codex/AGENTS.md ~/.codex/AGENTS.md
+```
