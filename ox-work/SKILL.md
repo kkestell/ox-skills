@@ -23,7 +23,7 @@ Implement the plan, record what was done, and commit.
 ## Write the work log
 
 7. Read `agents/work/_template.md`, or this skill's `assets/_template.md` if the workspace has none, and use it to write the work log in `agents/work/`. Name the file `YYYY-MM-DD-NNN-slug.md`, using today's date, the next sequence for the day, and the plan's slug.
-8. Keep the log concise. Record where the work departed from the plan and why, decisions made during the work, the checks that ran, manual verification with the commands to reproduce it, and follow-up work. Do not repeat the plan, the diff, or the conversation.
+8. Keep the log concise. Record meaningful departures from the plan and why, decisions made during the work, final validation outcomes, manual verification with the commands to reproduce it, and follow-up work. Include unresolved failures or skipped required checks. Do not log routine command mistakes or corrected formatting retries unless they affected the result. Do not repeat the plan, the diff, or the conversation.
 
 ## Commit
 
@@ -32,14 +32,10 @@ Implement the plan, record what was done, and commit.
 
 ## Final response
 
-When the work is committed, reply in the form below and nothing else. Lead with the main point, write plainly, and leave out the checks that passed and the steps you took.
+When the work is committed, reply in the form below and nothing else. Lead with the main point, write plainly, and leave out the checks that passed and the steps you took. Include **Surprises** only for a material departure from the plan, unexpected code behavior, or follow-up work that matters to the user. Routine command mistakes and corrected formatting retries are not surprises. Omit the section when there are none.
 
 ```markdown
 One or two sentences saying what was built and whether the plan's goal is met.
-
-**Surprises:**
-
-- A departure from the plan, a detour, something unexpected in the code, or follow-up work.
 
 **Work log:** `agents/work/YYYY-MM-DD-NNN-slug.md` · **Commit:** `abc1234` · **Lines:** +120 / −45 (net +75)
 
@@ -51,4 +47,4 @@ One or two sentences saying what was built and whether the plan's goal is met.
 **Next:** `/ox-review commit abc1234`
 ```
 
-Write `None.` under Surprises if the work went as planned. Count lines from the commit, excluding `agents/`, with `git diff --shortstat HEAD~1 HEAD -- . ':(exclude)agents'`. List every file the commit created or modified, marked `(created)` or `(modified)`.
+Count lines from the commit, excluding `agents/`, with `git diff --shortstat HEAD~1 HEAD -- . ':(exclude)agents'`. List every file the commit created or modified, marked `(created)` or `(modified)`.
